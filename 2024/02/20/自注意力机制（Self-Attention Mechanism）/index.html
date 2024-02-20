@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>YuZai | YuZai</title><meta name="author" content="雨崽"><meta name="copyright" content="雨崽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="自注意力机制（Self-Attention Mechanism）一、什么是Self-Attention Mechanism先让我们来了解什么是注意力机制，当我们看到一张图画时，第一眼肯定会注意到图片中最显眼的特征，深度学习中的注意力机制（Attention Mechanism）是一种模仿人类视觉和认知系统的方法，它允许神经网络在处理输入数据时集中注意力于相关的部分。通过引入注意力机制，神经网络能够">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YuZai">
+<meta property="og:url" content="http://example.com/2024/02/20/%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%EF%BC%88Self-Attention%20Mechanism%EF%BC%89/index.html">
+<meta property="og:site_name" content="YuZai">
+<meta property="og:description" content="自注意力机制（Self-Attention Mechanism）一、什么是Self-Attention Mechanism先让我们来了解什么是注意力机制，当我们看到一张图画时，第一眼肯定会注意到图片中最显眼的特征，深度学习中的注意力机制（Attention Mechanism）是一种模仿人类视觉和认知系统的方法，它允许神经网络在处理输入数据时集中注意力于相关的部分。通过引入注意力机制，神经网络能够">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-02-20T02:56:53.768Z">
+<meta property="article:modified_time" content="2024-02-03T03:40:25.660Z">
+<meta property="article:author" content="雨崽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/02/20/%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%EF%BC%88Self-Attention%20Mechanism%EF%BC%89/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'YuZai',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-03 11:40:25'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="YuZai"><span class="site-name">YuZai</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-20T02:56:53.768Z" title="发表于 2024-02-20 10:56:53">2024-02-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-03T03:40:25.660Z" title="更新于 2024-02-03 11:40:25">2024-02-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="自注意力机制（Self-Attention-Mechanism）"><a href="#自注意力机制（Self-Attention-Mechanism）" class="headerlink" title="自注意力机制（Self-Attention Mechanism）"></a>自注意力机制（Self-Attention Mechanism）</h1><h2 id="一、什么是Self-Attention-Mechanism"><a href="#一、什么是Self-Attention-Mechanism" class="headerlink" title="一、什么是Self-Attention Mechanism"></a><strong>一、什么是Self-Attention Mechanism</strong></h2><p>先让我们来了解什么是注意力机制，当我们看到一张图画时，第一眼肯定会注意到图片中最显眼的特征，<strong>深度学习中的注意力机制（Attention Mechanism）</strong>是一种模仿人类视觉和认知系统的方法，它允许神经网络在处理输入数据时集中注意力于相关的部分。通过引入注意力机制，神经网络能够自动地学习并选择性地关注输入中的重要信息，提高模型的性能和泛化能力。</p>
+<p>例如下图：</p>
+<p>我们大部分人第一眼注意到的一定是东方明珠，但是这图其实还有旁边的楼，下面的汽车等等。这其实就是一种<strong>Attention</strong>，我们关注的是最主要的东西，而刻意“忽视”那些次要的东西。</p>
+<p>我们再来讲解一个重要的概念，即<strong>query、key和value</strong>。这三个词翻译成中文就是<strong>查询、键、值</strong>，看到这中文的意思，还是迷迷糊糊的。我们来举个例子：小明想在b站搜索深度学习，他把深度学习四个字输入到搜索栏，按下搜索键。搜索引擎就会将他的查询<strong>query</strong>映射到数据库中相关的标签<strong>key</strong>，如吴恩达、神经网络等等，然后向小明展示最匹配的结果<strong>value</strong>。</p>
+<p><img src="C:\Users\yangtianyu\AppData\Roaming\Typora\typora-user-images\image-20240202153020751.png" alt="image-20240202153020751"></p>
+<p>再比如以下这张图可以较好地去理解注意力机制，其展示了人类在看到一幅图像时如何高效分配有限注意力资源的，其中红色区域表明视觉系统更加关注的目标，从图中可以看出：人们会把注意力更多的投入到人的脸部。文本的标题以及文章的首句等位置。</p>
+<p><img src="C:\Users\yangtianyu\AppData\Roaming\Typora\typora-user-images\image-20240202153110426.png" alt="image-20240202153110426"></p>
+<p><strong>自注意力机制（self-attention mechanism）</strong>，也被称为注意力机制（attention mechanism），是一种用于序列数据建模的机制。它最初在自然语言处理领域中被广泛使用，但也可以应用于其他序列数据，如<strong>音频和时间序列数据</strong>。</p>
+<p><u>自注意力机制的目标是对序列中的每个元素分配一个权重，以便根据元素之间的关系进行建模。它通过将输入序列中的每个元素与其他元素进行比较来实现这一点，然后为每个元素计算一个权重，表示该元素与其他元素的关联程度。这些权重可以用于加权聚合序列中的元素，以产生一个表示整个序列的上下文向量。</u></p>
+<h2 id="二、Self-Attention-Mechanism的架构"><a href="#二、Self-Attention-Mechanism的架构" class="headerlink" title="二、Self-Attention Mechanism的架构"></a><strong>二、Self-Attention Mechanism的架构</strong></h2><p>原论文地址如下：<a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf">Attention is All you Need (neurips.cc)</a></p>
+<p>在原论文中我们可以看见这个公式<img src="C:\Users\yangtianyu\AppData\Roaming\Typora\typora-user-images\image-20240202154101599.png" alt="image-20240202154101599">，乍一看晦涩难懂，但是让我们一点一点来看，这个公式中的<strong>Q,K,V</strong>就是上面我们所描述的<strong><strong><strong><strong>query、key和value</strong></strong></strong></strong></p>
+<h3 id="1、计算过程"><a href="#1、计算过程" class="headerlink" title="1、计算过程"></a>1、计算过程</h3><h5 id="1-定义输入"><a href="#1-定义输入" class="headerlink" title="(1)定义输入"></a><strong>(1)定义输入</strong></h5><p>在进行Self - Attention之前，我们首先定义3个1×4的input。 pytorch代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">x = [</span><br><span class="line">    [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],  <span class="comment"># input 1</span></span><br><span class="line">    [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">2</span>],  <span class="comment"># input 2</span></span><br><span class="line">    [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]   <span class="comment"># input 3</span></span><br><span class="line">    ]</span><br><span class="line">x = torch.tensor(x, dtype=torch.float32)</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\yangtianyu\AppData\Roaming\Typora\typora-user-images\image-20240202163101412.png" alt="image-20240202163101412"></p>
+<h5 id="2-初始化权重"><a href="#2-初始化权重" class="headerlink" title="(2)初始化权重"></a><strong>(2)初始化权重</strong></h5><p>每个input和三个权重矩阵分别相乘会得到三个新的矩阵，分别是key(橙色)，query(红色)，value(紫色)。我们已经令input的shape为1×4，key、query、value的shape为1×3，因此可以推出与input相乘的权重矩阵的shape为4×3。 代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">w_key = [</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">]  </span><br><span class="line">w_query = [</span><br><span class="line">  [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line">]</span><br><span class="line">w_value = [</span><br><span class="line">  [<span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">  [<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">]</span><br><span class="line">w_key = torch.tensor(w_key, dtype=torch.float32)</span><br><span class="line">w_query = torch.tensor(w_query, dtype=torch.float32)</span><br><span class="line">w_value = torch.tensor(w_value, dtype=torch.float32)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Weights for key: \n&quot;</span>, w_key)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Weights for query: \n&quot;</span>, w_query)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Weights for value: \n&quot;</span>, w_value)</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-计算key，query和value"><a href="#3-计算key，query和value" class="headerlink" title="(3)计算key，query和value"></a><strong>(3)计算key，query和value</strong></h5><p>现在我们计算key,query和value矩阵的值，计算的过程也很简单,运用<strong>矩阵乘法</strong>即可： key &#x3D; input * w_key; query &#x3D; input * w_query; value &#x3D; input * w_value;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">keys = x * w_key</span><br><span class="line">querys = x * w_query</span><br><span class="line">values = x * w_value</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Keys: \n&quot;</span>, keys)</span><br><span class="line"><span class="comment"># tensor([[0., 1., 1.],</span></span><br><span class="line"><span class="comment">#         [4., 4., 0.],</span></span><br><span class="line"><span class="comment">#         [2., 3., 1.]])</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Querys: \n&quot;</span>, querys)</span><br><span class="line"><span class="comment"># tensor([[1., 0., 2.],</span></span><br><span class="line"><span class="comment">#         [2., 2., 2.],</span></span><br><span class="line"><span class="comment">#         [2., 1., 3.]])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Values: \n&quot;</span>, values)</span><br><span class="line"><span class="comment"># tensor([[1., 2., 3.],</span></span><br><span class="line"><span class="comment">#         [2., 8., 0.],</span></span><br><span class="line"><span class="comment">#         [2., 6., 3.]])</span></span><br></pre></td></tr></table></figure>
+
+<p><video src="https://vdn6.vzuu.com/SD/baa5d568-d1ff-11ed-b610-4ec36ac17394-v1_f4_t2_Enh02Rgd.mp4?pkey=AAVVWrzLSodRMWcWJeeDTZCYo1pLRDJh7fmu-XKD8SfSKV4gq7Zs1lfEp5JRu-EJO734jTyHdkfv6qYWxXcj9Eqn&c=avc.1.1&f=mp4&pu=078babd7&bu=078babd7&expiration=1706938517&v=ks6"></video></p>
+<h5 id="4-计算attention-scores"><a href="#4-计算attention-scores" class="headerlink" title="(4)计算attention scores"></a><strong>(4)计算attention scores</strong></h5><p>例如：为了获得input1的注意力分数(attention scores)，我们将input1的query(红色)与input1、2、3的key(橙色)的转置分别作<strong>点积</strong>，得到3个attention scores(蓝色)。 同理，我们也可以得到input2和input3的attention scores。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">attn_scores = querys @ keys.T</span><br><span class="line"><span class="built_in">print</span>(attn_scores)</span><br><span class="line"></span><br><span class="line"><span class="comment"># tensor([[ 2.,  4.,  4.],  # attention scores from Query 1</span></span><br><span class="line"><span class="comment">#         [ 4., 16., 12.],  # attention scores from Query 2</span></span><br><span class="line"><span class="comment">#         [ 4., 12., 10.]]) # attention scores from Query 3</span></span><br></pre></td></tr></table></figure>
+
+<p><video src="https://vdn6.vzuu.com/SD/ba947c46-d1ff-11ed-9ad4-5a9ad440476e-v1_f4_t2_CalaCoGb.mp4?pkey=AAWJSTTjjToas1ircgiog843qs5E6CQaQIgQ-X9PKLEl4fb-e_Ovatgh3jNjKmKJoZW6FIHyUW3fW9cf3-64zX4N&c=avc.1.1&f=mp4&pu=078babd7&bu=078babd7&expiration=1706938732&v=ks6"></video></p>
+<h5 id="5-对attention-scores作softmax"><a href="#5-对attention-scores作softmax" class="headerlink" title="(5)对attention scores作softmax"></a><strong>(5)对attention scores作softmax</strong></h5><p>上一步得到了attention scores矩阵后，我们对attention scores矩阵作softmax计算。softmax的作用为<strong>归一化</strong>，使得其中各项相加后为1。这样做的好处是凸显矩阵中最大的值并抑制远低于最大值的其他分量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.nn.functional <span class="keyword">import</span> softmax</span><br><span class="line"></span><br><span class="line">attn_scores_softmax = softmax(attn_scores, dim=-<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(attn_scores_softmax)</span><br><span class="line"><span class="comment"># tensor([[6.3379e-02, 4.6831e-01, 4.6831e-01],</span></span><br><span class="line"><span class="comment">#         [6.0337e-06, 9.8201e-01, 1.7986e-02],</span></span><br><span class="line"><span class="comment">#         [2.9539e-04, 8.8054e-01, 1.1917e-01]])</span></span><br><span class="line"></span><br><span class="line">attn_scores_softmax = [</span><br><span class="line">  [<span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">0.5</span>],</span><br><span class="line">  [<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>],</span><br><span class="line">  [<span class="number">0.0</span>, <span class="number">0.9</span>, <span class="number">0.1</span>]</span><br><span class="line">]</span><br><span class="line">attn_scores_softmax = torch.tensor(attn_scores_softmax)</span><br><span class="line"><span class="built_in">print</span>(attn_scores_softmax)</span><br></pre></td></tr></table></figure>
+
+<p><video src="https://vdn3.vzuu.com/SD/bbfe557a-d1ff-11ed-9f2f-66e4c2167c7d-v1_f4_t2_UHAJKLfk.mp4?disable_local_cache=1&bu=078babd7&c=avc.1.1&f=mp4&expiration=1706935152&auth_key=1706935152-0-0-cb18a5113c3607a0495a6971a113f5b0&v=tx&pu=078babd7"></video></p>
+<h5 id="6-将attention-scores与values相乘"><a href="#6-将attention-scores与values相乘" class="headerlink" title="(6)将attention scores与values相乘"></a><strong>(6)将attention scores与values相乘</strong></h5><p>每个score(蓝色)乘以其对应的value(紫色)得到3个alignment vectors(黄色)。在本教程中，我们将它们称为weighted values(加权值)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">weighted_values = values[:,<span class="literal">None</span>] * attn_scores_softmax.T[:,:,<span class="literal">None</span>]</span><br><span class="line"><span class="built_in">print</span>(weighted_values)</span><br></pre></td></tr></table></figure>
+
+<p><video src="https://vdn6.vzuu.com/SD/bae6a386-d1ff-11ed-9aca-52ff1c08e7d2-v1_f4_t2_FbZiXN1e.mp4?pkey=AAXV3tpxv0V0zJ6OxCoumSN3v1EEi0mfxSvUICOGHMIA9Id1cST7f2AohbKdDQBKJpg3rhQ3RuBlbppCT-u9Oen_&c=avc.1.1&f=mp4&pu=078babd7&bu=078babd7&expiration=1706938764&v=ks6"></video></p>
+<h5 id="7-对weighted-values求和得到output"><a href="#7-对weighted-values求和得到output" class="headerlink" title="(7)对weighted values求和得到output"></a>(7)对weighted values求和得到output</h5><p>从图中可以看出，每个input生成3个weighed values(黄色)，我们将这3个weighted values相加，得到output(深绿)。图中一共有3个input，所以最终生成3个output。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">outputs = weighted_values.<span class="built_in">sum</span>(dim=<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(outputs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># tensor([[2.0000, 7.0000, 1.5000],  # Output 1</span></span><br><span class="line"><span class="comment">#         [2.0000, 8.0000, 0.0000],  # Output 2</span></span><br><span class="line"><span class="comment">#         [2.0000, 7.8000, 0.3000]]) # Output 3</span></span><br></pre></td></tr></table></figure>
+
+<p><video src="https://vdn3.vzuu.com/SD/ba6d0b0c-d1ff-11ed-80d1-8e3029326578-v1_f4_t2_z5JLX8Cd.mp4?disable_local_cache=1&bu=078babd7&c=avc.1.1&f=mp4&expiration=1706935174&auth_key=1706935174-0-0-a8dd0fe35d911181ab61c301e8cc7052&v=tx&pu=078babd7"></video></p>
+<h3 id="2、回到公式"><a href="#2、回到公式" class="headerlink" title="2、回到公式"></a>2、回到公式</h3><p><img src="C:\Users\yangtianyu\AppData\Roaming\Typora\typora-user-images\image-20240202154101599.png" alt="image-20240202154101599"><br>$$<br>其实，这个公式就是描述了我们上面计算的过程。我们首先将Query与Key的转置作点积，然后将结果除以 \sqrt{d_k}<br> ，再作softmax计算，最后将计算的结果与Value作矩阵乘法得到output。<br>$$</p>
+<p>$$<br>这里有一个点，就是为什么要除以 \sqrt{d_k}？ d_k表示的是词向量的维度。我们除以d_k是为了防止 QK^T值过大，导致softmax计算时上溢出(overflow)。其次,使用 d_k可以使QK^T的结果满足期望为0，方差为1的分布。<br>$$</p>
+<h3 id="3、为什么这样计算"><a href="#3、为什么这样计算" class="headerlink" title="3、为什么这样计算"></a><strong>3、为什么这样计算</strong></h3><p>最后的问题是，为什么要像公式那样计算呢？</p>
+<p>我们先从<br>$$<br>QK^T<br>$$<br> 看起，从几何角度看，点积是两个向量的长度与它们夹角余弦的积。如果两向量夹角为90°，那么结果为0，代表两个向量线性无关。如果两个向量夹角越小，两向量在方向上相关性也越强，结果也越大。<strong>点积反映了两个向量在方向上的相似度，结果越大越相似。</strong></p>
+<p><img src="https://pic2.zhimg.com/80/v2-102d2c04012fe1d8f8a5a8e8cdd728a9_1440w.webp" alt="img"><br>$$<br>对QK^T进行相似度的计算后，再使用softmax归一化。最后将归一化的结果与V作乘法，计算的结果就是输入经过注意力机制加权求和之后的表示。<br>$$</p>
+<h1 id="三、简单代码实现"><a href="#三、简单代码实现" class="headerlink" title="三、简单代码实现"></a><strong>三、简单代码实现</strong></h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SelfAttention</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_size, hidden_size</span>):</span><br><span class="line">        <span class="built_in">super</span>(SelfAttention, self).__init__()</span><br><span class="line">        self.input_size = input_size</span><br><span class="line">        self.hidden_size = hidden_size</span><br><span class="line">        </span><br><span class="line">        self.query = nn.Linear(input_size, hidden_size)</span><br><span class="line">        self.key = nn.Linear(input_size, hidden_size)</span><br><span class="line">        self.value = nn.Linear(input_size, hidden_size)</span><br><span class="line">        self.softmax = nn.Softmax(dim=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        q = self.query(x)</span><br><span class="line">        k = self.key(x)</span><br><span class="line">        v = self.value(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算注意力权重</span></span><br><span class="line">        scores = torch.matmul(q, k.transpose(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">        attention_weights = self.softmax(scores)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 上下文向量计算</span></span><br><span class="line">        context_vector = torch.matmul(attention_weights, v)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> context_vector, attention_weights</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试自注意力机制</span></span><br><span class="line">input_size = <span class="number">4</span></span><br><span class="line">hidden_size = <span class="number">5</span></span><br><span class="line">x = torch.randn(<span class="number">3</span>, <span class="number">10</span>, input_size)  <span class="comment"># 输入序列的维度为(序列长度, 批量大小, 输入特征数)</span></span><br><span class="line"></span><br><span class="line">self_attention = SelfAttention(input_size, hidden_size)</span><br><span class="line">context_vector, attention_weights = self_attention(x)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Context vector:\n&quot;</span>, context_vector)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Attention weights:\n&quot;</span>, attention_weights)</span><br></pre></td></tr></table></figure>
+
+<p><strong>在这个示例中，我们定义了一个名为SelfAttention的自注意力机制类，它包括查询（query）、键（key）和值（value）的线性变换层，以及一个softmax函数用于计算注意力权重。在forward方法中，我们将输入序列x通过查询、键和值的线性变换层得到对应的向量，然后计算注意力权重。最后，我们将注意力权重与值向量相乘，得到上下文向量context_vector，并返回它以及注意力权重attention_weights。</strong></p>
+<p><strong>在代码的末尾，我们使用一个随机生成的输入序列x进行了简单的测试。输入序列的维度为(序列长度, 批量大小, 输入特征数)，这里我们假设序列长度为10，批量大小为3，输入特征数为4。然后，我们创建了一个SelfAttention实例，并将输入序列传递给它的forward方法，得到上下文向量和注意力权重。最后，我们打印出上下文向量和注意力权重的值。</strong></p>
+<p><strong>此文章仅作为学习笔记使用</strong></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/619154409">动图轻松理解Self-Attention(自注意力机制) - 知乎 (zhihu.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/631398525">注意力机制综述（图解完整版附代码） - 知乎 (zhihu.com)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">雨崽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/02/20/%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%EF%BC%88Self-Attention%20Mechanism%EF%BC%89/">http://example.com/2024/02/20/%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%EF%BC%88Self-Attention%20Mechanism%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">YuZai</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">雨崽</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%EF%BC%88Self-Attention-Mechanism%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">自注意力机制（Self-Attention Mechanism）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFSelf-Attention-Mechanism"><span class="toc-number">1.1.</span> <span class="toc-text">一、什么是Self-Attention Mechanism</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Self-Attention-Mechanism%E7%9A%84%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">二、Self-Attention Mechanism的架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、计算过程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%AE%9A%E4%B9%89%E8%BE%93%E5%85%A5"><span class="toc-number">1.2.1.0.1.</span> <span class="toc-text">(1)定义输入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%9D%83%E9%87%8D"><span class="toc-number">1.2.1.0.2.</span> <span class="toc-text">(2)初始化权重</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%AE%A1%E7%AE%97key%EF%BC%8Cquery%E5%92%8Cvalue"><span class="toc-number">1.2.1.0.3.</span> <span class="toc-text">(3)计算key，query和value</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E8%AE%A1%E7%AE%97attention-scores"><span class="toc-number">1.2.1.0.4.</span> <span class="toc-text">(4)计算attention scores</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%AF%B9attention-scores%E4%BD%9Csoftmax"><span class="toc-number">1.2.1.0.5.</span> <span class="toc-text">(5)对attention scores作softmax</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E5%B0%86attention-scores%E4%B8%8Evalues%E7%9B%B8%E4%B9%98"><span class="toc-number">1.2.1.0.6.</span> <span class="toc-text">(6)将attention scores与values相乘</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-%E5%AF%B9weighted-values%E6%B1%82%E5%92%8C%E5%BE%97%E5%88%B0output"><span class="toc-number">1.2.1.0.7.</span> <span class="toc-text">(7)对weighted values求和得到output</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%9B%9E%E5%88%B0%E5%85%AC%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、回到公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E8%AE%A1%E7%AE%97"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、为什么这样计算</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%AE%80%E5%8D%95%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">三、简单代码实现</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/20/%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%EF%BC%88Self-Attention%20Mechanism%EF%BC%89/" title="无题">无题</a><time datetime="2024-02-20T02:56:53.768Z" title="发表于 2024-02-20 10:56:53">2024-02-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 雨崽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
